@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Interés Simple</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .contenedor {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2563a8;
+        }
+
+        p {
+            text-align: center;
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            background: #2563a8;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #174779;
+        }
+
+        #resultado {
+            display: none;
+            margin-top: 25px;
+            padding: 18px;
+            background: #dbeafe;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #resultado h3 {
+            color: #174779;
+        }
+
+        .formula {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Calculadora de Interés Simple</h1>
+
+        <p>Calcula fácilmente el interés de tu inversión o préstamo.</p>
+
+        <label>Capital inicial ($)</label>
+        <input type="number" id="capital" placeholder="Ejemplo: 1000000" min="0">
+
+        <label>Tasa de interés (%)</label>
+        <input type="number" id="tasa" placeholder="Ejemplo: 5" min="0">
+
+        <label>Tiempo</label>
+        <input type="number" id="tiempo" placeholder="Ejemplo: 12" min="0">
+
+        <label>Tipo de tasa</label>
+        <select id="tipo">
+            <option value="mensual">Mensual (tiempo en meses)</option>
+            <option value="anual">Anual (tiempo en años)</option>
+        </select>
+
+        <button onclick="calcularInteres()">
+            Calcular interés
+        </button>
+
+        <div id="resultado">
+            <h3>Resultado del cálculo</h3>
+            <p id="interes"></p>
+            <p id="monto"></p>
+        </div>
+
+        <div class="formula">
+            <strong>Fórmulas:</strong><br>
+            Interés = Capital × Tasa × Tiempo<br>
+            Monto total = Capital + Interés
+        </div>
+
+    </div>
+
+    <script>
+        function calcularInteres() {
+
+            let capital = parseFloat(document.getElementById("capital").value);
+            let tasa = parseFloat(document.getElementById("tasa").value);
+            let tiempo = parseFloat(document.getElementById("tiempo").value);
+
+            if (
+                !Number.isFinite(capital) ||
+                !Number.isFinite(tasa) ||
+                !Number.isFinite(tiempo) ||
+                capital < 0 || tasa < 0 || tiempo < 0
+            ) {
+                alert("Por favor, ingresa valores válidos.");
+                return;
+            }
+
+            // Convertir la tasa porcentual a decimal
+            let tasaDecimal = tasa / 100;
+
+            // Calcular el interés simple
+            let interes = capital * tasaDecimal * tiempo;
+
+            // Calcular el monto total
+            let montoTotal = capital + interes;
+
+            // Formato de moneda colombiana
+            let formato = new Intl.NumberFormat("es-CO", {
+                style: "currency",
+                currency: "COP",
+                maximumFractionDigits: 2
+            });
+
+            document.getElementById("interes").innerHTML =
+                "Interés generado: " + formato.format(interes);
+
+            document.getElementById("monto").innerHTML =
+                "Monto total: " + formato.format(montoTotal);
+
+            document.getElementById("resultado").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
